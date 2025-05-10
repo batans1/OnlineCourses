@@ -164,6 +164,8 @@ namespace OnlineCourses.Controllers
         private bool ResultExists(int id)
         {
             return _context.Results.Any(e => e.Id == id);
+
         }
     }
+
 }

@@ -1,8 +1,61 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using OnlineCourses.Data
+@model IEnumerable<OnlineCourses.Data.Course>
+
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Greeting Popup -->
+<div id="greeting-popup" class="alert alert-info text-center position-fixed top-0 start-50 translate-middle-x mt-3 shadow-lg fw-bold fade-in" style="z-index: 1050; font-size: 1.5rem; padding: 1rem 2rem; transition: opacity 0.5s ease;">
+    <button type="button" class="btn-close position-absolute top-0 end-0 mt-2 me-2" aria-label="Close" onclick="hidePopup()"></button>
+    🎉 Welcome! ✨
 </div>
+
+<h2 class="mb-4">Featured Courses</h2>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var course in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                @if (course.IsFeatured)
+                {
+                    <div class="position-absolute top-0 start-0 bg-warning text-dark fw-bold px-2 py-1 rounded-end" style="z-index: 1;">
+                        ⭐ Featured
+                    </div>
+                }
+                <img src="@course.ImageUrl" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Course Image">
+                <div class="card-body">
+                    <h5 class="card-title">@course.Title</h5>
+                    <p class="card-text">@course.Description?.Substring(0, Math.Min(100, course.Description.Length))...</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a asp-controller="Enrollments" asp-action="Create" asp-route-courseId="@course.Id" class="btn btn-success w-100">Enroll</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        const popup = document.getElementById('greeting-popup');
+
+        function hidePopup() {
+            popup.style.opacity = '0';
+            setTimeout(() => popup.style.display = 'none', 500);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            popup.style.display = 'block';
+            popup.style.opacity = '1';
+            setTimeout(hidePopup, 5000);
+        });
+    </script>
+}
+
+<style>
+    .fade-in {
+        opacity: 0;
+    }
+</style>
