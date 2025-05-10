@@ -1,46 +1,147 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using OnlineCourses.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - OnlineCourses</title>
+    <meta name="viewport" content="width=device-width, initial-scale=2.5" />
+    <title>@ViewData["Title"] - 123Courser</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/OnlineCourses.styles.css" asp-append-version="true" />
+    <style>
+        .navbar-brand {
+            color: #000000 !important;
+            font-weight: 600;
+        }
+
+        body {
+            background-color: #f9fbfd;
+            color: #2c3e50;
+        }
+
+        .navbar {
+            background-color: #0056b3;
+        }
+
+        .nav-link, .nav-link:visited {
+            color: #3333ff !important;
+        }
+
+            .nav-link:hover {
+                color: #000099 !important;
+            }
+
+        footer.footer {
+            background-color: #003f7f;
+            color: #cfdff7;
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            position: relative;
+        }
+
+            footer.footer .text-secondary p {
+                color: #dee8f3;
+                font-style: italic;
+                margin-bottom: 2px;
+            }
+
+            footer.footer .copyright {
+                position: absolute;
+                bottom: 5px;
+                left: 15px;
+            }
+
+        h1, h2, h3, h4 {
+            color: #003366;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #ffffff; /* contrast fix */
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #004b9e;
+                color: #ffffff;
+            }
+    </style>
+
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OnlineCourses</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.png" alt="123Courser Logo" style="height: 105px; width: 105px;">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
+
+                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Courses" asp-action="Index">Courses</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Enrollments" asp-action="Index">Enrollments</a></li>
+
+
+                    </ul>
+
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Results" asp-action="Index">Test Results</a></li>
+                        <li class="nav-item"><a class="nav-link text-dark" asp-controller="Tests" asp-action="Index">Tests</a></li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-dark">👋 Hello, @User.Identity.Name!</span>
+                            </li>
+                            <li class="nav-item">
+                                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post" id="logoutForm">
+                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted text-center mt-4">
         <div class="container">
-            &copy; 2025 - OnlineCourses - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="text-secondary">
+
+                <p>"An investment in knowledge pays the best interest." – Benjamin Franklin</p>
+
+            </div>
+            <div class="copyright">
+                &copy; 2025 - 123Courser
+            </div>
         </div>
     </footer>
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

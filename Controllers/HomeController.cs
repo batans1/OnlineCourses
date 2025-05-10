@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineCourses.Data;
 using OnlineCourses.Models;
-
 using System.Diagnostics;
 
 namespace OnlineCourses.Controllers
@@ -11,12 +10,12 @@ namespace OnlineCourses.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context )
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
         }
-       
+
         public async Task<IActionResult> Index()
         {
             var featuredCourses = await _context.Courses
@@ -24,7 +23,7 @@ namespace OnlineCourses.Controllers
         .ToListAsync();
 
             return View(featuredCourses);
-            
+
         }
 
         public IActionResult Privacy()
@@ -33,8 +32,8 @@ namespace OnlineCourses.Controllers
         }
         private readonly ApplicationDbContext _context;
 
-        
-        
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
