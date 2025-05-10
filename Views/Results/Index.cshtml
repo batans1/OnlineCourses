@@ -1,47 +1,129 @@
 ﻿@model IEnumerable<OnlineCourses.Data.Result>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Test Results";
 }
 
-<h1>Index</h1>
+<h1 class="page-title">Test Results</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn-create" asp-action="Create">+ Add New Result</a>
 </p>
-<table class="table">
+
+<table class="table table-styled">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Score)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Test)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Student)
-            </th>
-            <th></th>
+            <th>Score</th>
+            <th>Grade</th>
+            <th>@Html.DisplayNameFor(model => model.Test)</th>
+            <th>@Html.DisplayNameFor(model => model.Student)</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Score)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Test.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Student.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            string grade;
+            string gradeClass;
+
+            if (item.Score >= 90)
+            {
+                grade = "A";
+                gradeClass = "grade-a";
+            }
+            else if (item.Score >= 80)
+            {
+                grade = "B";
+                gradeClass = "grade-b";
+            }
+            else if (item.Score >= 70)
+            {
+                grade = "C";
+                gradeClass = "grade-c";
+            }
+            else if (item.Score >= 60)
+            {
+                grade = "D";
+                gradeClass = "grade-d";
+            }
+            else
+            {
+                grade = "F";
+                gradeClass = "grade-f";
+            }
+
+            var isPerfect = item.Score == 100;
+            <tr>
+                <td>@item.Score</td>
+                <td><span class="@gradeClass">@grade @(isPerfect ? "- Perfect!" : "")</span></td>
+                <td>@item.Test.Title</td>
+                <td>@item.Student.UserName</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<style>
+    .page-title {
+        text-align: center;
+        margin-top: 1rem;
+        font-size: 2rem;
+    }
+
+    .btn-create {
+        display: inline-block;
+        margin-bottom: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .table-styled {
+        width: 100%;
+        border-collapse: collapse;
+        margin: auto;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+        .table-styled th, .table-styled td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        .table-styled thead {
+            background-color: #f8f9fa;
+        }
+
+    .grade-a {
+        color: green;
+        font-weight: bold;
+    }
+
+    .grade-b {
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .grade-c {
+        color: goldenrod;
+        font-weight: bold;
+    }
+
+    .grade-d {
+        color: orange;
+        font-weight: bold;
+    }
+
+    .grade-f {
+        color: red;
+        font-weight: bold;
+    }
+</style>

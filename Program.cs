@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineCourses.Data;
 
 namespace OnlineCourses
-{ 
+{
     public class Program
     {
         public static void Main(string[] args)
